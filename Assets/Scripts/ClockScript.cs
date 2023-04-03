@@ -9,7 +9,8 @@ public class ClockScript : MonoBehaviour
     private enum CurveSelector {
         teleport,
         smooth,
-        lifelike
+        lifelike,
+        exaggerated
     }
 
     private const float
