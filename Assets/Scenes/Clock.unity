@@ -360,6 +360,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1951769284}
     - target: {fileID: 4555593447224605292, guid: 28e58c3586880674e86f68c8e0f0ebba, type: 3}
+      propertyPath: animationStyle
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555593447224605292, guid: 28e58c3586880674e86f68c8e0f0ebba, type: 3}
       propertyPath: curve.m_Curve.Array.size
       value: 5
       objectReference: {fileID: 0}
