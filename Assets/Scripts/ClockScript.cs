@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,15 +23,13 @@ public class ClockScript : MonoBehaviour
     [SerializeField]
     private CurveSelector animationStyle;
     private AnimationCurve? curve;
-
-    private TimeSpan previousTime;
     
     // Start is called before the first frame update
     void Start()
     {
         // Workaround to access UnityEngine.CurvePresetLibrary
         // https://answers.unity.com/questions/1125568/accessing-color-presets-in-c-script.html
-        UnityEngine.Object curveLibraryObject = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(@"Assets\Editor\Clock.curves");
+        UnityEngine.Object curveLibraryObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(@"Assets\Editor\Clock.curves");
         SerializedObject curveLibrary =  new(curveLibraryObject);
         curve = curveLibrary.getAnimationCurve((int)animationStyle);
     }
