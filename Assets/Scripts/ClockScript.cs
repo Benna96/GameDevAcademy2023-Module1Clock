@@ -1,5 +1,4 @@
 using System;
-using UnityEditor;
 using UnityEngine;
 
 #nullable enable
@@ -28,11 +27,8 @@ public class ClockScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Workaround to access UnityEngine.CurvePresetLibrary
-        // https://answers.unity.com/questions/1125568/accessing-color-presets-in-c-script.html
-        UnityEngine.Object curveLibraryObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(@"Assets\Editor\Clock.curves");
-        SerializedObject curveLibrary =  new(curveLibraryObject);
-        curve = curveLibrary.getAnimationCurve((int)animationStyle);
+        CurvePresetLibraryAsset? curvePresets = Resources.Load("Clock anim curves") as CurvePresetLibraryAsset;
+        curve = curvePresets?.getAnimationCurve((int)animationStyle);
     }
 
     // Update is called once per frame
@@ -55,16 +51,5 @@ public class ClockScript : MonoBehaviour
 
         if (secondHandle != null)
             secondHandle.localEulerAngles = new Vector3(0, 0, (float)(secondsToSecondDegrees * totalSecondsAdjustedForCurve));
-    }
-}
-
-internal static class SerializedExtensions
-{
-    public static AnimationCurve? getAnimationCurve(this SerializedObject? @object, int index)
-    {
-        SerializedProperty? curvePresets = @object?.FindProperty("m_Presets");
-        SerializedProperty? wantedPreset = curvePresets?.GetArrayElementAtIndex(index);
-        SerializedProperty? wantedCurve = wantedPreset?.FindPropertyRelative("m_Curve");
-        return wantedCurve?.animationCurveValue;
     }
 }
