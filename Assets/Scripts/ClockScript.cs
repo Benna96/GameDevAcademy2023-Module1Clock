@@ -18,6 +18,7 @@ public class ClockScript : MonoBehaviour
         secondsToSecondDegrees = 360f / 60f,
         secondsToMinuteDegrees = 360f / (float)(60 * 60),
         secondsToHourDegrees = 360f / (float)(60 * 60 * 12);
+    private readonly TimeSpan oneSecond = new(0, 0, 1);
 
     [SerializeField]
     private Transform? hourHandle, minuteHandle, secondHandle;
@@ -39,12 +40,12 @@ public class ClockScript : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        // Moves the handles in a lifelike manner.
-        // The movement starts at the beginning of each second and during the second,
-        // the handle moves towards where it should be at the beginning of the next second
-        // using an animation curve.
+        // Each second, the handles move from the previous second's position towards the current second's position.
+        // The movement is governed by the selected animation curve.
+        // In the animation curve, a value of of 0 stands for the previous second's position,
+        // while a value of 1 stands for the current second's position.
 
-        TimeSpan time = DateTime.Now.TimeOfDay;
+        TimeSpan time = DateTime.Now.TimeOfDay.Subtract(oneSecond);
         double totalFullSeconds = Math.Floor(time.TotalSeconds);
         float fractionSecondsAdjustedForCurve = curve?.Evaluate(time.Milliseconds / 1000f) ?? time.Milliseconds / 1000f;
         double totalSecondsAdjustedForCurve = totalFullSeconds + fractionSecondsAdjustedForCurve;
